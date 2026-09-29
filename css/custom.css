@@ -44,3 +44,11 @@ html[data-theme="dark"] {
     background-size: cover !important;
   }
 }
+/* 手机端单独显示另一套全站背景 */
+@media screen and (max-width: 768px) {
+  #web_bg {
+    background-image: url('/img/Moondrop/img-2026-09-29 22_50_37.png.jpg') !important;
+    background-position: center center !important;
+    background-size: cover !important;
+  }
+}
