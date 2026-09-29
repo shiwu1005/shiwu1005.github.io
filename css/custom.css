@@ -1,25 +1,37 @@
-/* 修改页脚背景颜色 */
+html:root {
+    --card-bg: rgba(255, 255, 255, 0.55) !important;
+}
+html[data-theme="dark"] {
+    --card-bg: rgba(18, 18, 18, 0.55) !important;
+}
+/* 用 CSS 变量控制卡片透明，这样最稳 */
+:root {
+    --card-bg: rgba(255, 255, 255, 0.55) !important;
+    --card-bg-transparent: rgba(255, 255, 255, 0.55) !important;
+}
+
+/* 深色模式 */
+[data-theme="dark"] {
+    --card-bg: rgba(18, 18, 18, 0.55) !important;
+    --card-bg-transparent: rgba(18, 18, 18, 0.55) !important;
+}
+
+/* 页脚透明 */
 #footer {
-    background: transparent !important; /* 或者是 #ffffff (白色), #000000 (黑色) */
-}
- /* 封面做成黑胶：转的是单独一层，按钮不会被带着转 */
-.aplayer.vinyl .aplayer-pic {
-  float: none; margin: 0 auto;
-  width: 210px; height: 210px;
-  border-radius: 50%;
-  border: 10px solid #15151b;
+    background: transparent !important;
 }
 
-/* 用 inherit 把封面图接到伪元素上，只让它转 */
-.aplayer.vinyl .aplayer-pic::before {
-  content: ""; position: absolute; top: 0; right: 0; bottom: 0; left: 0;
-  border-radius: 50%;
-  background: inherit;
-  animation: vinyl-spin 22s linear infinite;
-  animation-play-state: paused;              /* 默认停着 */
+/* 主页整体透明 */
+#page,
+#content-inner,
+.layout {
+    background: transparent !important;
 }
 
-/* 按钮变成 aplayer-pause，说明在播 → 转起来 */
-.aplayer.vinyl .aplayer-pic:has(.aplayer-pause)::before { animation-play-state: running; }
-
-@keyframes vinyl-spin { to { transform: rotate(360deg); } }
+/* 侧边栏卡片透明 */
+#aside-content .card-widget {
+    background: rgba(255, 255, 255, 0.55) !important;
+}
+[data-theme="dark"] #aside-content .card-widget {
+    background: rgba(18, 18, 18, 0.55) !important;
+}
