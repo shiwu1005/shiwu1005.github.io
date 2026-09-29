@@ -1,0 +1,4 @@
+/* 修改页脚背景颜色 */
+#footer {
+    background: transparent !important; /* 或者是 #ffffff (白色), #000000 (黑色) */
+}
