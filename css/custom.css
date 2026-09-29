@@ -35,3 +35,12 @@ html[data-theme="dark"] {
 [data-theme="dark"] #aside-content .card-widget {
     background: rgba(18, 18, 18, 0.55) !important;
 }
+/* 电脑端不变，手机端单独显示背景图 */
+@media screen and (max-width: 768px) {
+  /* 假设你的顶部图容器是 #page-header，按需调整选择器 */
+  #page-header.full_page {
+    background-image: url('/img/Moondrop/img-2026-09-17 15_00_19.png.jpg') !important;
+    background-position: center center !important;
+    background-size: cover !important;
+  }
+}
