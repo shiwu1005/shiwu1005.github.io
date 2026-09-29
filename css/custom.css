@@ -2,3 +2,24 @@
 #footer {
     background: transparent !important; /* 或者是 #ffffff (白色), #000000 (黑色) */
 }
+ /* 封面做成黑胶：转的是单独一层，按钮不会被带着转 */
+.aplayer.vinyl .aplayer-pic {
+  float: none; margin: 0 auto;
+  width: 210px; height: 210px;
+  border-radius: 50%;
+  border: 10px solid #15151b;
+}
+
+/* 用 inherit 把封面图接到伪元素上，只让它转 */
+.aplayer.vinyl .aplayer-pic::before {
+  content: ""; position: absolute; top: 0; right: 0; bottom: 0; left: 0;
+  border-radius: 50%;
+  background: inherit;
+  animation: vinyl-spin 22s linear infinite;
+  animation-play-state: paused;              /* 默认停着 */
+}
+
+/* 按钮变成 aplayer-pause，说明在播 → 转起来 */
+.aplayer.vinyl .aplayer-pic:has(.aplayer-pause)::before { animation-play-state: running; }
+
+@keyframes vinyl-spin { to { transform: rotate(360deg); } }
