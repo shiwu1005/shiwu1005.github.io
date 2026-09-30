@@ -293,9 +293,3 @@ html[data-theme="dark"] {
 [data-theme="dark"] #ai-input-box::before {
   background: rgba(0, 0, 0, 0.65);
 }
-@media screen and (max-width: 768px) {
-  #waifu,
-  #waifu-toggle {
-    display: none !important;
-  }
-}
