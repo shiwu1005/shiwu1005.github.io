@@ -5,8 +5,8 @@
 
 // Recommended to use absolute path for live2d_path parameter
 // live2d_path 参数建议使用绝对路径
-//const live2d_path = 'https://fastly.jsdelivr.net/npm/live2d-widgets@1.0.1/dist/';
 const live2d_path = '/live2d-widget/dist/';
+// const live2d_path = '/dist/';
 
 // Method to encapsulate asynchronous resource loading
 // 封装异步加载资源的方法
@@ -35,7 +35,7 @@ function loadExternalResource(url, type) {
 (async () => {
   // If you are concerned about display issues on mobile devices, you can use screen.width to determine whether to load
   // 如果担心手机上显示效果不佳，可以根据屏幕宽度来判断是否加载
-  //if (screen.width < 768) return;
+  // if (screen.width < 768) return;
 
   // Avoid cross-origin issues with image resources
   // 避免图片资源跨域问题
@@ -54,13 +54,12 @@ function loadExternalResource(url, type) {
   ]);
   // For detailed usage of configuration options, see README.en.md
   // 配置选项的具体用法见 README.md
-  
   initWidget({
     waifuPath: live2d_path + 'waifu-tips.json',
     // cdnPath: 'https://fastly.jsdelivr.net/gh/fghrsh/live2d_api/',
     cubism2Path: live2d_path + 'live2d.min.js',
     cubism5Path: 'https://cubism.live2d.com/sdk-web/cubismcore/live2dcubismcore.min.js',
-    tools: ['hitokoto', 'asteroids','ask-ai', 'switch-model', 'switch-texture', 'photo', 'info', 'quit'],
+    tools: ['hitokoto', 'asteroids', 'switch-model', 'switch-texture', 'photo', 'info', 'quit'],
     logLevel: 'warn',
     drag: false,
   });
