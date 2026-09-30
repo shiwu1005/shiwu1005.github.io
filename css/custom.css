@@ -164,7 +164,7 @@ html[data-theme="dark"] {
 #waifu {
   left: auto !important;
   right: 10px !important;
-  bottom: 20px !important;
+  bottom: auto !important;
 }
 
 /* 隐藏看板娘工具菜单里的“一言”按钮 */
@@ -292,4 +292,18 @@ html[data-theme="dark"] {
 
 [data-theme="dark"] #ai-input-box::before {
   background: rgba(0, 0, 0, 0.65);
+}
+@media screen and (max-width: 768px) {
+  #waifu,
+  #waifu-toggle {
+    display: block !important;
+  }
+  #live2d {
+    width: 150px !important;
+    height: 150px !important;
+  }
+  #waifu-tips {
+    width: 180px;
+    font-size: 12px;
+  }
 }
