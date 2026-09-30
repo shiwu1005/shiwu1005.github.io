@@ -164,7 +164,7 @@ html[data-theme="dark"] {
 #waifu {
   left: auto !important;
   right: 10px !important;
-  bottom: auto !important;
+  bottom: 10px !important;
 }
 
 /* 隐藏看板娘工具菜单里的“一言”按钮 */
