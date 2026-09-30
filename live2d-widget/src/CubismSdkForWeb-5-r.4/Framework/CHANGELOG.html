@@ -1,0 +1,523 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>いちごいちえ | いちごいちえ</title><meta name="author" content="秤"><meta name="copyright" content="秤"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="ChangelogAll notable changes to this project will be documented in this file. The format is based on Keep a Changelog. 5-r.4 - 2025-05-15Added Add parameter repeat processing that connects the right a">
+<meta property="og:type" content="website">
+<meta property="og:title" content="いちごいちえ">
+<meta property="og:url" content="http://example.com/live2d-widget/src/CubismSdkForWeb-5-r.4/Framework/CHANGELOG.html">
+<meta property="og:site_name" content="いちごいちえ">
+<meta property="og:description" content="ChangelogAll notable changes to this project will be documented in this file. The format is based on Keep a Changelog. 5-r.4 - 2025-05-15Added Add parameter repeat processing that connects the right a">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/img/game/Screenshot_20260820_120907_com.hypergryph.arknights.jpg">
+<meta property="article:published_time" content="2026-09-29T20:47:07.014Z">
+<meta property="article:modified_time" content="2025-05-14T01:27:31.000Z">
+<meta property="article:author" content="秤">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/img/game/Screenshot_20260820_120907_com.hypergryph.arknights.jpg"><script type="application/ld+json"></script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/live2d-widget/src/CubismSdkForWeb-5-r.4/Framework/CHANGELOG.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.7.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.3.1/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        const data = { value }
+
+        if (ttl != null) {
+          data.expiry = Date.now() + ttl * 86400000
+        }
+
+        localStorage.setItem(key, JSON.stringify(data))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return
+
+        try {
+          const data = JSON.parse(itemStr)
+
+          if (data.expiry && Date.now() > data.expiry) {
+            localStorage.removeItem(key)
+            return
+          }
+
+          return data.value
+        } catch {
+          localStorage.removeItem(key)
+        }
+      }
+    }
+
+    const scriptCache = new Map()
+    const cssCache = new Map()
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => {
+        if (scriptCache.has(url)) {
+          return scriptCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const script = document.createElement('script')
+
+          script.src = url
+          script.async = true
+
+          for (const key in attr) {
+            script.setAttribute(key, attr[key])
+          }
+
+          script.onload = resolve
+          script.onerror = reject
+
+          document.head.appendChild(script)
+        })
+
+        scriptCache.set(url, promise)
+
+        return promise
+      },
+      getCSS: (url, id) => {
+        if (cssCache.has(url)) {
+          return cssCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const link = document.createElement('link')
+
+          link.rel = 'stylesheet'
+          link.href = url
+
+          if (id) {
+            link.id = id
+          }
+
+          link.onload = resolve
+          link.onerror = reject
+
+          document.head.appendChild(link)
+        })
+
+        cssCache.set(url, promise)
+
+        return promise
+      },
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!true && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const metaThemeColor = document.querySelector('meta[name="theme-color"]')
+      const activateDarkMode = () => {
+        document.documentElement.dataset.theme = 'dark'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.dataset.theme = 'light'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.13.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'いちごいちえ',
+  isHighlightShrink: false,
+  isToc: false,
+  pageType: 'page'
+}</script><link rel="stylesheet" href="/css/custom.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.css"><meta name="generator" content="Hexo 8.1.2"></head><body><div class="bg-animation" id="web_bg" style="background-image: url(/img/Moondrop/img-2026-09-29%2022_02_56.png.jpg);"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/game/Screenshot_20260820_120907_com.hypergryph.arknights.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">2</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">1</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/gallery/"><i class="fa-fw fas fa-images"></i><span> 相册</span></a></div></div></div></div><div class="page" id="body-wrap"><header class="not-home-page" id="page-header" style="background-image: url(/img/Moondrop/img-2026-09-17%2015_00_57.png.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">いちごいちえ</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/gallery/"><i class="fa-fw fas fa-images"></i><span> 相册</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="page-site-info"><h1 id="site-title"></h1></div></header><main class="layout" id="content-inner"><div id="page"><div class="container" id="article-container"><h1 id="Changelog"><a href="#Changelog" class="headerlink" title="Changelog"></a>Changelog</h1><p>All notable changes to this project will be documented in this file.</p>
+<p>The format is based on <a target="_blank" rel="noopener" href="https://keepachangelog.com/en/1.0.0/">Keep a Changelog</a>.</p>
+<h2 id="5-r-4-2025-05-15"><a href="#5-r-4-2025-05-15" class="headerlink" title="5-r.4 - 2025-05-15"></a><a target="_blank" rel="noopener" href="https://github.com/Live2D/CubismWebFramework/compare/5-r.3...5-r.4">5-r.4</a> - 2025-05-15</h2><h3 id="Added"><a href="#Added" class="headerlink" title="Added"></a>Added</h3><ul>
+<li>Add parameter repeat processing that connects the right and left ends of the parameter to create a loop, allowing the motion to repeat.<ul>
+<li>Add the variable <code>_isOverriddenParameterRepeat</code> to the <code>CubismModel</code> class for managing parameter repeat flags at the model level.</li>
+<li>Add the variable <code>_userParameterRepeatDataList</code> to the <code>CubismModel</code> class for managing parameter repeat flags for each parameter.</li>
+</ul>
+</li>
+<li>Add a <code>getPartParentPartIndices()</code> function.</li>
+<li>Add a flag to the arguments of the following methods to enable the function that verifies the consistency of <code>motion3.json</code>:<ul>
+<li><code>CubismUserModel.loadMotion()</code></li>
+<li><code>CubismMotion.create()</code></li>
+<li><code>CubismMotion.parse()</code></li>
+</ul>
+</li>
+</ul>
+<h3 id="Fixed"><a href="#Fixed" class="headerlink" title="Fixed"></a>Fixed</h3><ul>
+<li>Fix an issue with detecting the end of playback when looping motion.</li>
+</ul>
+<h2 id="5-r-3-2025-02-18"><a href="#5-r-3-2025-02-18" class="headerlink" title="5-r.3 - 2025-02-18"></a><a target="_blank" rel="noopener" href="https://github.com/Live2D/CubismWebFramework/compare/5-r.2...5-r.3">5-r.3</a> - 2025-02-18</h2><h3 id="Added-1"><a href="#Added-1" class="headerlink" title="Added"></a>Added</h3><ul>
+<li>Add new motion loop processing that seamlessly connects the start and end points of the loop.<ul>
+<li>The <code>_isLoop</code> variable was moved from class <code>CubismMotion</code> to class <code>ACubismMotion</code>.</li>
+<li>Add the setter for <code>_isLoop</code>, <code>setLoop()</code>, to class <code>ACubismMotion</code>.</li>
+<li>Add the getter for <code>_isLoop</code>, <code>getLoop()</code>, to class <code>ACubismMotion</code>.</li>
+<li>The <code>_isLoopFadeIn</code> variable was moved from class <code>CubismMotion</code> to class <code>ACubismMotion</code>.</li>
+<li>Add the setter for <code>_isLoopFadeIn</code>, <code>setLoopFadeIn()</code>, to class <code>ACubismMotion</code>.</li>
+<li>Add the getter for <code>_isLoopFadeIn</code>, <code>getLoopFadeIn()</code>, to class <code>ACubismMotion</code>.</li>
+<li>Add a variable <code>_motionBehavior</code> for version control to the <code>CubismMotion</code> class.</li>
+</ul>
+</li>
+</ul>
+<h3 id="Changed"><a href="#Changed" class="headerlink" title="Changed"></a>Changed</h3><ul>
+<li>Change ESLint version to <code>9.17.0</code>.<ul>
+<li>With this update, we have added the eslint.confing.mjs required for FlatConfig.</li>
+</ul>
+</li>
+</ul>
+<h3 id="Deprecated"><a href="#Deprecated" class="headerlink" title="Deprecated"></a>Deprecated</h3><ul>
+<li>Deprecate the following elements due to the change in the variable declaration location.<ul>
+<li><code>CubismMotion.setIsLoop()</code></li>
+<li><code>CubismMotion.isLoop()</code></li>
+<li><code>CubismMotion.setIsLoopFadeIn()</code></li>
+<li><code>CubismMotion.isLoopFadeIn()</code></li>
+</ul>
+</li>
+</ul>
+<h2 id="5-r-2-2024-12-19"><a href="#5-r-2-2024-12-19" class="headerlink" title="5-r.2 - 2024-12-19"></a><a target="_blank" rel="noopener" href="https://github.com/Live2D/CubismWebFramework/compare/5-r.1...5-r.2">5-r.2</a> - 2024-12-19</h2><h3 id="Added-2"><a href="#Added-2" class="headerlink" title="Added"></a>Added</h3><ul>
+<li>Add the functionality to call a function when motion playback starts.</li>
+<li>Add an API to <code>CubismMotionJson</code> for verifying the consistency of <code>motion3.json</code>. by <a target="_blank" rel="noopener" href="https://github.com/Live2D/CubismNativeFramework/pull/57">@pillowtrucker</a><ul>
+<li>This API is ported from <code>Cubism Native Framework</code>.</li>
+</ul>
+</li>
+</ul>
+<h3 id="Changed-1"><a href="#Changed-1" class="headerlink" title="Changed"></a>Changed</h3><ul>
+<li>Change to create and manage a <code>CubismShader</code> for each <code>GLRenderingContext</code>.</li>
+<li>Change the access level of the private members in <code>CubismModelSettingJson</code> class to protected.</li>
+<li>Move JSON key strings set to the member variables of <code>CubismModelSettingJson</code> class.</li>
+<li>Change <code>FrequestNode</code> to be exported as part of the module.</li>
+<li>Change to permit to overwrite motion fade by the value specified in .model3.json on <code>CubismUserModel.loadMotion()</code>.</li>
+<li>Change the value of pi used in the calculation of <code>CubismBreath.updateParameters()</code> to <code>Math.PI</code>.</li>
+</ul>
+<h3 id="Deprecated-1"><a href="#Deprecated-1" class="headerlink" title="Deprecated"></a>Deprecated</h3><ul>
+<li><p>Deprecate the following elements because a priority value is not actually used during expression motion playback:</p>
+<ul>
+<li><code>CubismExpressionMotionManager._currentPriority</code></li>
+<li><code>CubismExpressionMotionManager._reservePriority</code></li>
+<li><code>CubismExpressionMotionManager.startMotionPriority()</code></li>
+<li><code>CubismExpressionMotionManager.getCurrentPriority()</code></li>
+<li><code>CubismExpressionMotionManager.getReservePriority()</code></li>
+<li><code>CubismExpressionMotionManager.setReservePriority()</code></li>
+</ul>
+<p>Please use the <code>CubismMotionQueueManager.startMotion()</code> instead of <code>CubismExpressionMotionManager.startMotionPriority()</code>.</p>
+</li>
+</ul>
+<h3 id="Fixed-1"><a href="#Fixed-1" class="headerlink" title="Fixed"></a>Fixed</h3><ul>
+<li>Fix an issue where already registered keys could be added on <code>csmMap.appendKey()</code>.</li>
+<li>Fix a bug that caused an error when playing <code>CubismExpresionMotion</code> with <code>CubismMotionQueueManager.startMotion()</code>.</li>
+<li>Fix an issue where <code>CubismMath.cardanoAlgorithmForBezier()</code> was using a different function than Cubism SDK for Native.</li>
+<li>Fix a potential problem with division by 0 when a pose fade time is set to 0 seconds.</li>
+<li>Fix an issue where <code>CubismPose._fadeTimeSeconds</code> does not become 0.</li>
+</ul>
+<h2 id="5-r-1-2024-03-26"><a href="#5-r-1-2024-03-26" class="headerlink" title="5-r.1 - 2024-03-26"></a><a target="_blank" rel="noopener" href="https://github.com/Live2D/CubismWebFramework/compare/5-r.1-beta.4...5-r.1">5-r.1</a> - 2024-03-26</h2><h3 id="Added-3"><a href="#Added-3" class="headerlink" title="Added"></a>Added</h3><ul>
+<li>Add function <code>mod()</code> to compute floating-point remainder in <code>CubismMath</code> class.</li>
+</ul>
+<h3 id="Changed-2"><a href="#Changed-2" class="headerlink" title="Changed"></a>Changed</h3><ul>
+<li>Change an expression “overwrite” to “override” for multiply color, screen color, and culling to adapt the actual behavior.</li>
+<li>Change the weight value in <code>Expression</code> from <code>CubismExpressionMotion</code> to have it in the <code>CubismExpressionMotionManager</code>.</li>
+<li>Reorganize the names of some functions and variables.<ul>
+<li>This is a change that depends on fixing <code>eslintrc.yml</code>.</li>
+</ul>
+</li>
+<li>Change to output log if the argument <code>motionQueueEntry</code> is <code>null</code> in the <code>updateFadeWeight()</code> function of the <code>ACubismMotion</code> class.</li>
+</ul>
+<h3 id="Fixed-2"><a href="#Fixed-2" class="headerlink" title="Fixed"></a>Fixed</h3><ul>
+<li>Fix <code>eslintrc.yml</code> to conform to the exact wording.</li>
+</ul>
+<h3 id="Deprecated-2"><a href="#Deprecated-2" class="headerlink" title="Deprecated"></a>Deprecated</h3><ul>
+<li>Deprecate the <code>_fadeWeight</code> variable and the <code>getFadeWeight()</code> function of the <code>CubismExpressionMotion</code> class.<ul>
+<li>The <code>_fadeWeight</code> variable of the <code>CubismExpressionMotion</code> class can cause problems.</li>
+<li>Please use the <code>getFadeWeight()</code> function of the <code>CubismExpressionMotionManager</code> class with one argument from now on.</li>
+</ul>
+</li>
+<li>The <code>startMotion()</code> function of the <code>CubismMotionQueueManager</code> class with the unnecessary third argument <code>userTimeSeconds</code> is deprecated.<ul>
+<li>Please use the <code>startMotion()</code> function with one arguments from now on.</li>
+</ul>
+</li>
+</ul>
+<h2 id="5-r-1-beta-4-2024-01-18"><a href="#5-r-1-beta-4-2024-01-18" class="headerlink" title="5-r.1-beta.4 - 2024-01-18"></a><a target="_blank" rel="noopener" href="https://github.com/Live2D/CubismWebFramework/compare/5-r.1-beta.3...5-r.1-beta.4">5-r.1-beta.4</a> - 2024-01-18</h2><h3 id="Changed-3"><a href="#Changed-3" class="headerlink" title="Changed"></a>Changed</h3><ul>
+<li>Change target to <code>es6</code>.</li>
+</ul>
+<h3 id="Fixed-3"><a href="#Fixed-3" class="headerlink" title="Fixed"></a>Fixed</h3><ul>
+<li>Fix an issue where models with a specific number of masks could not be drawn correctly.</li>
+<li>Fix to check for error when reading json.</li>
+</ul>
+<h2 id="5-r-1-beta-3-2023-11-30"><a href="#5-r-1-beta-3-2023-11-30" class="headerlink" title="5-r.1-beta.3 - 2023-11-30"></a><a target="_blank" rel="noopener" href="https://github.com/Live2D/CubismWebFramework/compare/5-r.1-beta.2...5-r.1-beta.3">5-r.1-beta.3</a> - 2023-11-30</h2><h2 id="5-r-1-beta-2-2023-09-28"><a href="#5-r-1-beta-2-2023-09-28" class="headerlink" title="5-r.1-beta.2 - 2023-09-28"></a><a target="_blank" rel="noopener" href="https://github.com/Live2D/CubismWebFramework/compare/5-r.1-beta.1...5-r.1-beta.2">5-r.1-beta.2</a> - 2023-09-28</h2><h3 id="Added-4"><a href="#Added-4" class="headerlink" title="Added"></a>Added</h3><ul>
+<li>Add a comment for clarity for the function whose usage is not intuitive.</li>
+</ul>
+<h2 id="5-r-1-beta-1-2023-08-17"><a href="#5-r-1-beta-1-2023-08-17" class="headerlink" title="5-r.1-beta.1 - 2023-08-17"></a><a target="_blank" rel="noopener" href="https://github.com/Live2D/CubismWebFramework/compare/4-r.7...5-r.1-beta.1">5-r.1-beta.1</a> - 2023-08-17</h2><h3 id="Added-5"><a href="#Added-5" class="headerlink" title="Added"></a>Added</h3><ul>
+<li>Add the function to get the ID of a given parameter.(<code>CubismModel.getParameterId</code>)</li>
+<li>Add the <code>CubismExpressionMotionManager</code> class.</li>
+</ul>
+<h3 id="Changed-4"><a href="#Changed-4" class="headerlink" title="Changed"></a>Changed</h3><ul>
+<li>Change the visibility of the <code>CubismId</code> constructor to private.<ul>
+<li>Please use <code>CubismFramework.getIdManager().getId()</code> to get <code>CubismId</code>.</li>
+</ul>
+</li>
+<li>Change the word <code>DrawMesh</code> to <code>DrawMeshWebGL</code>.</li>
+</ul>
+<h3 id="Fixed-4"><a href="#Fixed-4" class="headerlink" title="Fixed"></a>Fixed</h3><ul>
+<li>Fix a bug that the value applied by multiply was not appropriate during expression transitions.</li>
+<li>Fix the structure of the class in renderer.</li>
+<li>Fix a issue where <code>ARRAY_BUFFER</code> was used on multiple targets.</li>
+<li>Separate shader class from <code>cubismrenderer</code> class.</li>
+<li>Separate the high precision mask process from the clipping mask setup process.</li>
+</ul>
+<h3 id="Removed"><a href="#Removed" class="headerlink" title="Removed"></a>Removed</h3><ul>
+<li>Remove several arguments of <code>DrawMesh</code> function.</li>
+</ul>
+<h2 id="4-r-7-2023-05-25"><a href="#4-r-7-2023-05-25" class="headerlink" title="4-r.7 - 2023-05-25"></a><a target="_blank" rel="noopener" href="https://github.com/Live2D/CubismWebFramework/compare/4-r.6.2...4-r.7">4-r.7</a> - 2023-05-25</h2><h3 id="Added-6"><a href="#Added-6" class="headerlink" title="Added"></a>Added</h3><ul>
+<li>Add compiler options <code>noImplicitAny</code> and <code>useUnknownInCatchVariables</code> to <code>tsconfig.json</code>.</li>
+<li>Add some function for checking consistency of MOC3.<ul>
+<li>Add the function of checking consistency on reviving a MOC3. (<code>CubismMoc::Create</code>)</li>
+</ul>
+</li>
+<li>Add a function to parse the opacity from <code>.motion3.json</code>.</li>
+<li>Add some functions to change Multiply and Screen colors on a per part basis.</li>
+</ul>
+<h3 id="Changed-5"><a href="#Changed-5" class="headerlink" title="Changed"></a>Changed</h3><ul>
+<li>Change access specifier for <code>CubismExpressionMotion</code>.</li>
+</ul>
+<h3 id="Fixed-5"><a href="#Fixed-5" class="headerlink" title="Fixed"></a>Fixed</h3><ul>
+<li>Fix to support added compiler options <code>noImplicitAny</code> and <code>useUnknownInCatchVariables</code>.</li>
+</ul>
+<h2 id="4-r-6-2-2023-03-16"><a href="#4-r-6-2-2023-03-16" class="headerlink" title="4-r.6.2 - 2023-03-16"></a><a target="_blank" rel="noopener" href="https://github.com/Live2D/CubismWebFramework/compare/4-r.6.1...4-r.6.2">4-r.6.2</a> - 2023-03-16</h2><h3 id="Fixed-6"><a href="#Fixed-6" class="headerlink" title="Fixed"></a>Fixed</h3><ul>
+<li>Fix some problems related to Cubism Core.<ul>
+<li>See <code>CHANGELOG.md</code> in Core.</li>
+</ul>
+</li>
+</ul>
+<h2 id="4-r-6-1-2023-03-10"><a href="#4-r-6-1-2023-03-10" class="headerlink" title="4-r.6.1 - 2023-03-10"></a><a target="_blank" rel="noopener" href="https://github.com/Live2D/CubismWebFramework/compare/4-r.6...4-r.6.1">4-r.6.1</a> - 2023-03-10</h2><h3 id="Added-7"><a href="#Added-7" class="headerlink" title="Added"></a>Added</h3><ul>
+<li>Add function to validate MOC3 files.</li>
+</ul>
+<h2 id="4-r-6-2023-02-21"><a href="#4-r-6-2023-02-21" class="headerlink" title="4-r.6 - 2023-02-21"></a><a target="_blank" rel="noopener" href="https://github.com/Live2D/CubismWebFramework/compare/4-r.5...4-r.6">4-r.6</a> - 2023-02-21</h2><h3 id="Added-8"><a href="#Added-8" class="headerlink" title="Added"></a>Added</h3><ul>
+<li>Add support for high-precision masks.</li>
+<li>The number of render textures used can now be increased arbitrarily.<ul>
+<li>The maximum number of masks when using multiple render textures has been increased to “number of render textures * 32”.</li>
+</ul>
+</li>
+<li>Add API to allow users to configure culling.</li>
+</ul>
+<h3 id="Changed-6"><a href="#Changed-6" class="headerlink" title="Changed"></a>Changed</h3><ul>
+<li>Change to not reference <code>CubismClippingManager_WebGL</code> on models that do not use clipping masks.</li>
+</ul>
+<h3 id="Fixed-7"><a href="#Fixed-7" class="headerlink" title="Fixed"></a>Fixed</h3><ul>
+<li>Fix a crash when a <code>WebGLRenderingContext</code> is not registered with <code>Cubism Renderer_WebGL</code>.<ul>
+<li>It now displays a warning and does not draw models.</li>
+</ul>
+</li>
+<li>Fix a bug when displaying a model with culling set, some of the other drawn images are missing.</li>
+<li>Fix a bug that caused update information for some models not to be updated when multiple models are displayed.<ul>
+<li>Call the function to extend the initial memory with CubismFramework.initialize(). See <code>CHANGELOG.md</code> in Core.</li>
+</ul>
+</li>
+</ul>
+<h2 id="4-r-5-2022-09-08"><a href="#4-r-5-2022-09-08" class="headerlink" title="4-r.5 - 2022-09-08"></a><a target="_blank" rel="noopener" href="https://github.com/Live2D/CubismWebFramework/compare/4-r.5-beta.5...4-r.5">4-r.5</a> - 2022-09-08</h2><h3 id="Added-9"><a href="#Added-9" class="headerlink" title="Added"></a>Added</h3><ul>
+<li>Add the multilingual supported documents.</li>
+<li>Add immediate stabilization of physics.</li>
+<li>Implemented a process to switch between <code>CubismJson</code> parsing and <code>JSON.parse()</code>.</li>
+</ul>
+<h2 id="4-r-5-beta-5-2022-08-04"><a href="#4-r-5-beta-5-2022-08-04" class="headerlink" title="4-r.5-beta.5 - 2022-08-04"></a><a target="_blank" rel="noopener" href="https://github.com/Live2D/CubismWebFramework/compare/4-r.5-beta.4...4-r.5-beta.5">4-r.5-beta.5</a> - 2022-08-04</h2><h3 id="Fixed-8"><a href="#Fixed-8" class="headerlink" title="Fixed"></a>Fixed</h3><ul>
+<li>Fix <code>csmGetMocVersion</code> function argument.</li>
+<li>Fix a bug in which processing was interrupted when an invalid vertex was specified in the middle of a physics operation.</li>
+<li>Fix crash with exception when reading .moc3 files of unsupported versions.</li>
+<li>Fix physics system input to be split by the physics setting time.</li>
+</ul>
+<h2 id="4-r-5-beta-4-2022-07-07"><a href="#4-r-5-beta-4-2022-07-07" class="headerlink" title="4-r.5-beta.4 - 2022-07-07"></a><a target="_blank" rel="noopener" href="https://github.com/Live2D/CubismWebFramework/compare/4-r.5-beta.3...4-r.5-beta.4">4-r.5-beta.4</a> - 2022-07-07</h2><h3 id="Added-10"><a href="#Added-10" class="headerlink" title="Added"></a>Added</h3><ul>
+<li>Add a function to get the latest .moc3 Version and the .moc3 Version of the loaded model.</li>
+<li>Add a function to get the type of parameters of the model.</li>
+<li>Add a function to get the parent part of the model’s Drawable.</li>
+</ul>
+<h2 id="4-r-5-beta-3-2022-06-16"><a href="#4-r-5-beta-3-2022-06-16" class="headerlink" title="4-r.5-beta.3 - 2022-06-16"></a><a target="_blank" rel="noopener" href="https://github.com/Live2D/CubismWebFramework/compare/4-r.5-beta.2...4-r.5-beta.3">4-r.5-beta.3</a> - 2022-06-16</h2><h3 id="Fixed-9"><a href="#Fixed-9" class="headerlink" title="Fixed"></a>Fixed</h3><ul>
+<li><code>getDrawableTextureIndices</code> function in <code>CubismModel</code> has been renamed to <code>getDrawableTextureIndex</code> because the name was not correct.<ul>
+<li><code>getDrawableTextureIndices</code> function is marked as deprecated.</li>
+</ul>
+</li>
+<li>Fix physics system behaviour when exists Physics Fps Setting in .physics3.json.</li>
+</ul>
+<h2 id="4-r-5-beta-2-2022-06-02"><a href="#4-r-5-beta-2-2022-06-02" class="headerlink" title="4-r.5-beta.2 - 2022-06-02"></a><a target="_blank" rel="noopener" href="https://github.com/Live2D/CubismWebFramework/compare/4-r.5-beta.1...4-r.5-beta.2">4-r.5-beta.2</a> - 2022-06-02</h2><h3 id="Fixed-10"><a href="#Fixed-10" class="headerlink" title="Fixed"></a>Fixed</h3><ul>
+<li>Fixed a bug that caused Multiply Color &#x2F; Screen Color of different objects to be applied.<ul>
+<li>See <code>CHANGELOG.md</code> in Core.</li>
+<li>No modifications to Samples and Framework.</li>
+</ul>
+</li>
+</ul>
+<h2 id="4-r-5-beta-1-2022-05-19"><a href="#4-r-5-beta-1-2022-05-19" class="headerlink" title="4-r.5-beta.1 - 2022-05-19"></a><a target="_blank" rel="noopener" href="https://github.com/Live2D/CubismWebFramework/compare/4-r.4...4-r.5-beta.1">4-r.5-beta.1</a> - 2022-05-19</h2><h3 id="Added-11"><a href="#Added-11" class="headerlink" title="Added"></a>Added</h3><ul>
+<li>Add processing related to Multiply Color &#x2F; Screen Color added in Cubism 4.2.</li>
+</ul>
+<h3 id="Fixed-11"><a href="#Fixed-11" class="headerlink" title="Fixed"></a>Fixed</h3><ul>
+<li>Fix usage of Anisotropy filtering.</li>
+<li>Fix model was not displayed when the number of masks exceeded the limit.</li>
+<li>Fix getTextureDirectory() to return the directory name of the 0th texture path.</li>
+</ul>
+<h2 id="4-r-4-2021-12-09"><a href="#4-r-4-2021-12-09" class="headerlink" title="4-r.4 - 2021-12-09"></a><a target="_blank" rel="noopener" href="https://github.com/Live2D/CubismWebFramework/compare/4-r.3...4-r.4">4-r.4</a> - 2021-12-09</h2><h3 id="Fixed-12"><a href="#Fixed-12" class="headerlink" title="Fixed"></a>Fixed</h3><ul>
+<li>Fix useless void 0.</li>
+<li>Fix a warning when <code>SegmentType</code> could not be obtained when loading motion.</li>
+<li>Fix return correct error values for out-of-index arguments in cubismjson by <a target="_blank" rel="noopener" href="https://github.com/cocor-au-lait">@cocor-au-lait</a>.</li>
+<li>Fix a bug that motions currently played do not fade out when play a motion.</li>
+</ul>
+<h2 id="4-r-3-2021-06-10"><a href="#4-r-3-2021-06-10" class="headerlink" title="4-r.3 - 2021-06-10"></a><a target="_blank" rel="noopener" href="https://github.com/Live2D/CubismWebFramework/compare/4-r.3-beta.1...4-r.3">4-r.3</a> - 2021-06-10</h2><h3 id="Fixed-13"><a href="#Fixed-13" class="headerlink" title="Fixed"></a>Fixed</h3><ul>
+<li>Fix motion event time value from Int to Float.</li>
+</ul>
+<h2 id="4-r-3-beta-1-2021-05-13"><a href="#4-r-3-beta-1-2021-05-13" class="headerlink" title="4-r.3-beta.1 - 2021-05-13"></a><a target="_blank" rel="noopener" href="https://github.com/Live2D/CubismWebFramework/compare/4-r.2...4-r.3-beta.1">4-r.3-beta.1</a> - 2021-05-13</h2><h3 id="Added-12"><a href="#Added-12" class="headerlink" title="Added"></a>Added</h3><ul>
+<li>Implement a function to get the correct value when the time axis of the Bezier handle cannot be linear.</li>
+</ul>
+<h2 id="4-r-2-2021-03-09"><a href="#4-r-2-2021-03-09" class="headerlink" title="4-r.2 - 2021-03-09"></a><a target="_blank" rel="noopener" href="https://github.com/Live2D/CubismWebFramework/compare/4-r.1...4-r.2">4-r.2</a> - 2021-03-09</h2><h3 id="Fixed-14"><a href="#Fixed-14" class="headerlink" title="Fixed"></a>Fixed</h3><ul>
+<li>Fix implementation of <code>iterator#increment</code> in <code>csmmap</code> and <code>csmvector</code>.</li>
+<li>Fix delay in starting fade-out for expressions.</li>
+<li>Fix Physics input reflect flag on evaluate.</li>
+<li>Fix reference size of model matrix.</li>
+<li>Fix <code>Int</code> to <code>Float</code> when getting <code>PhysicsSettings.Vertices.Radius</code> in <code>physics3.json</code> parsing.<ul>
+<li><strong>[INFO]</strong> This fix may change the behavior of the physics operations.<br>The behavior changes if the value of <code>PhysicsSettings.Vertices.Radius</code> in <code>physics3.json</code> is less than <code>1.0</code>.<br>If you want to return to the behavior before Cubism SDK for Web R1,<br>change the value of the corresponding <code>PhysicsSettings.Vertices.Radius</code> to <code>0</code>.</li>
+<li>This fix is related to fix applied to <code>Cubism Editor 4.0.05 beta1</code> and later.<br>Please see <a target="_blank" rel="noopener" href="https://docs.live2d.com/cubism-editor-manual/updates4/">Cubism Editor Changelog</a>.<ul>
+<li><strong>Fix physics and scene blending settings where the length of the pendulum would be converted to an integer when displayed.</strong></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="Changed-7"><a href="#Changed-7" class="headerlink" title="Changed"></a>Changed</h3><ul>
+<li>Rename the function name that handles seconds from <code>Time</code> to <code>Seconds</code>.</li>
+<li>Avoiding needless namespace syntax to simplify imports by <a target="_blank" rel="noopener" href="https://github.com/cocor-au-lait">@cocor-au-lait</a></li>
+</ul>
+<h2 id="4-r-1-2020-01-30"><a href="#4-r-1-2020-01-30" class="headerlink" title="4-r.1 - 2020-01-30"></a><a target="_blank" rel="noopener" href="https://github.com/Live2D/CubismWebFramework/compare/ce2585a919ac6e99f64dd468933772c6f1abbcc7...4-r.1">4-r.1</a> - 2020-01-30</h2><h3 id="Added-13"><a href="#Added-13" class="headerlink" title="Added"></a>Added</h3><ul>
+<li>Add <code>.editorconfig</code>, <code>.gitattributes</code> and <code>.gitignore</code>.</li>
+<li>Add document <code>README.md</code> and <code>CHANGELOG.md</code>.</li>
+<li>Add <code>package.json</code> for development and build.</li>
+<li>Add Prettier and ESLint for format and check code quolity.</li>
+</ul>
+<h3 id="Changed-8"><a href="#Changed-8" class="headerlink" title="Changed"></a>Changed</h3><ul>
+<li>Move source files to <code>/src</code> directory.</li>
+<li>Reformat code using Prettier and ESLint.</li>
+</ul>
+</div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/game/Screenshot_20260820_120907_com.hypergryph.arknights.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">秤</div><div class="author-info-description"></div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">2</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">1</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">把每一次相遇都当作最后一次。</div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/09/30/%E4%BA%8C%E6%97%A5%E8%B0%88/" title="杂谈">杂谈</a><time datetime="2026-09-30T12:45:00.000Z" title="发表于 2026-09-30 20:45:00">2026-09-30</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/09/29/hello-world/" title="Hello World">Hello World</a><time datetime="2026-09-29T12:08:49.812Z" title="发表于 2026-09-29 20:08:49">2026-09-29</time></div></div></div></div><div class="card-widget card-tags"><div class="item-headline"><i class="fas fa-tags"></i><span>标签</span></div><div class="card-tag-cloud"><a href="/tags/%E6%9D%82%E8%B0%88/" style="font-size: 1.1em; color: #999">杂谈</a></div></div><div class="card-widget card-archives">
+    <div class="item-headline"><i class="fas fa-archive"></i><span>归档</span></div>
+  
+    <ul class="card-archive-list">
+      
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2026/09/">
+            <span class="card-archive-list-date">
+              九月 2026
+            </span>
+            <span class="card-archive-list-count">2</span>
+          </a>
+        </li>
+      
+    </ul>
+  </div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 - 2026 By 秤</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 8.1.2</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.7.0</a></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.7.0"></script><script src="/js/main.js?v=5.7.0"></script><div class="js-pjax"></div><div id="aplayer"></div><script src="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.js"></script><script src="/js/aplayer-init.js"></script><script src="/js/gallery-pager.js"></script><script src="/live2d-widget/dist/autoload.js"></script><script src="https://cdn.jsdelivr.net/npm/pjax@0.2.8/pjax.min.js" defer="defer"></script><script>document.addEventListener('DOMContentLoaded', () => {
+  const pjaxSelectors = ["head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+
+  window.pjax = new Pjax({
+    elements: 'a:not([target="_blank"]):not([data-fancybox])',
+    selectors: pjaxSelectors,
+    cacheBust: false,
+    analytics: false,
+    scrollRestoration: false
+  })
+
+  const triggerPjaxFn = (val) => {
+    if (!val) return
+    Object.values(val).forEach(fn => {
+      try {
+        fn()
+      } catch (err) {
+        console.debug('Pjax callback failed:', err)
+      }
+    })
+  }
+
+  document.addEventListener('pjax:send', () => {
+    // removeEventListener
+    btf.removeGlobalFnEvent('pjaxSendOnce')
+    btf.removeGlobalFnEvent('themeChange')
+
+    // reset readmode
+    const $bodyClassList = document.body.classList
+    if ($bodyClassList.contains('read-mode')) $bodyClassList.remove('read-mode')
+
+    triggerPjaxFn(window.globalFn.pjaxSend)
+  })
+
+  document.addEventListener('pjax:complete', () => {
+    btf.removeGlobalFnEvent('pjaxCompleteOnce')
+    document.querySelectorAll('script[data-pjax]').forEach(item => {
+      if (!item.parentNode) return
+      const newScript = document.createElement('script')
+      const content = item.text || item.textContent || ''
+      Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+      newScript.appendChild(document.createTextNode(content))
+      item.parentNode.replaceChild(newScript, item)
+    })
+
+    triggerPjaxFn(window.globalFn.pjaxComplete)
+  })
+
+  document.addEventListener('pjax:error', e => {
+    const responseURL = e.request && e.request.responseURL
+    if (e.request && e.request.status === 404) {
+      false
+        ? pjax.loadUrl('/404.html')
+        : responseURL && (window.location.href = responseURL)
+    } else if (responseURL) {
+      window.location.href = responseURL
+    }
+  })
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
