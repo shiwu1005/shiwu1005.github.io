@@ -5,6 +5,7 @@ const STYLE_ID = 'live2d-chat-panel-style';
 const LIST_ID = 'live2d-chat-list';
 const MAX_MESSAGES = 60;
 const MAX_HISTORY = 10;
+const TOOL_XML_HINT = /<\s*(?:result|invoke|tool_call|function_calls)\b|<parameter\s+name=|<name>\s*[A-Za-z_]/i;
 let sending = false;
 const conversation = [];
 const PANEL_CSS = `
@@ -224,7 +225,7 @@ async function send(panel, chat, question) {
     try {
         const context = await buildSiteContext();
         const { reply, actions } = await askChat(chat, question, conversation.slice(), context);
-        const answer = reply || '好，我来帮你处理～';
+        const answer = reply && !TOOL_XML_HINT.test(reply) ? reply : '好，我来帮你处理～';
         remember(question, answer);
         pending.classList.remove('lc-typing');
         pending.textContent = answer;

@@ -23,6 +23,13 @@ const LIST_ID = 'live2d-chat-list';
 const MAX_MESSAGES = 60;
 /** 带给模型的最多历史消息条数（一问一答算两条，所以取偶数） */
 const MAX_HISTORY = 10;
+/**
+ * 模型偶尔会把工具调用写成 <invoke>/<name>/<parameter> 标签文本。
+ * 这种内容既不该显示给访客，更不能进历史 —— 一旦进去，它后面会一直模仿。
+ * （函数端也会识别并清洗，这里是第二道保险。）
+ */
+const TOOL_XML_HINT =
+  /<\s*(?:result|invoke|tool_call|function_calls)\b|<parameter\s+name=|<name>\s*[A-Za-z_]/i;
 
 let sending = false;
 /** 当前会话的上下文，点"清空"会重置 */
@@ -263,7 +270,8 @@ async function send(panel: HTMLElement, chat: ChatConfig, question: string): Pro
     // 模型据此决定要不要调用工具（放歌、打开文章……）。
     const context = await buildSiteContext();
     const { reply, actions } = await askChat(chat, question, conversation.slice(), context);
-    const answer = reply || '好，我来帮你处理～';
+    // 假工具调用文本不显示、也不写进历史
+    const answer = reply && !TOOL_XML_HINT.test(reply) ? reply : '好，我来帮你处理～';
     remember(question, answer);
     pending.classList.remove('lc-typing');
     pending.textContent = answer;
