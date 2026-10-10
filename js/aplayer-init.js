@@ -4,7 +4,8 @@ document.addEventListener('DOMContentLoaded', function() {
   fetch('/music/music.json')
     .then(res => res.json())
     .then(audioList => {
-      new APlayer({
+      // 挂到 window 上，看板娘（Ash 小屋）才能控制播放器：切歌、暂停、调音量
+      window.ap = new APlayer({
         container: document.getElementById('aplayer'),
         fixed: true,
         mini: true,

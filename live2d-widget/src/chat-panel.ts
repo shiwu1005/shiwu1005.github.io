@@ -13,6 +13,7 @@
  */
 
 import { askChat, ChatNotice } from './supabase-chat.js';
+import { buildSiteContext, executeActions } from './site-actions.js';
 import type { ChatConfig, ChatMessage } from './supabase-chat.js';
 
 const PANEL_ID = 'live2d-chat-panel';
@@ -117,6 +118,15 @@ const PANEL_CSS = `
   border-bottom-left-radius: 4px;
   color: #cf1322;
 }
+#${PANEL_ID} .lc-msg-action {
+  align-self: flex-start;
+  background: rgba(73, 177, 245, .12);
+  border: 1px dashed rgba(73, 177, 245, .55);
+  color: #2f6f9f;
+  font-size: 13px;
+  max-width: 92%;
+  padding: 6px 10px;
+}
 #${PANEL_ID} .lc-typing { animation: lc-pulse 1.2s ease-in-out infinite; color: #8a94a6; }
 @keyframes lc-pulse { 0%, 100% { opacity: .45; } 50% { opacity: 1; } }
 #${PANEL_ID} .lc-footer {
@@ -154,6 +164,7 @@ const PANEL_CSS = `
 [data-theme="dark"] #${PANEL_ID}::before { background: rgba(20, 22, 26, .78); }
 [data-theme="dark"] #${PANEL_ID} .lc-msg-ai { background: rgba(43, 48, 56, .92); border-color: #3a4048; }
 [data-theme="dark"] #${PANEL_ID} .lc-msg-error { background: rgba(58, 35, 38, .94); border-color: #5c2b30; color: #ff9c9c; }
+[data-theme="dark"] #${PANEL_ID} .lc-msg-action { background: rgba(73, 177, 245, .16); border-color: rgba(73, 177, 245, .45); color: #9fd0f5; }
 [data-theme="dark"] #${PANEL_ID} .lc-footer { background: rgba(35, 39, 46, .86); border-color: #333; }
 [data-theme="dark"] #${PANEL_ID} .lc-input { background: rgba(27, 30, 35, .92); border-color: #3a4048; color: #e6e6e6; }
 
@@ -206,7 +217,11 @@ function getList(panel: HTMLElement): HTMLElement {
   return panel.querySelector(`#${LIST_ID}`) as HTMLElement;
 }
 
-function appendMessage(panel: HTMLElement, kind: 'user' | 'ai' | 'error', text: string): HTMLElement {
+function appendMessage(
+  panel: HTMLElement,
+  kind: 'user' | 'ai' | 'error' | 'action',
+  text: string,
+): HTMLElement {
   const list = getList(panel);
   const item = document.createElement('div');
   item.className = `lc-msg lc-msg-${kind}`;
@@ -244,11 +259,20 @@ async function send(panel: HTMLElement, chat: ChatConfig, question: string): Pro
   button.disabled = true;
 
   try {
-    // 把之前几轮一起发过去，模型才记得住上下文
-    const answer = await askChat(chat, question, conversation.slice());
+    // 把之前几轮 + 站点信息（当前页面/文章/歌单）一起发过去，
+    // 模型据此决定要不要调用工具（放歌、打开文章……）。
+    const context = await buildSiteContext();
+    const { reply, actions } = await askChat(chat, question, conversation.slice(), context);
+    const answer = reply || '好，我来帮你处理～';
     remember(question, answer);
     pending.classList.remove('lc-typing');
     pending.textContent = answer;
+
+    if (actions.length) {
+      // 真正动手的是浏览器：切歌、跳转都由这里执行
+      const results = await executeActions(actions);
+      for (const text of results) appendMessage(panel, 'action', text);
+    }
   } catch (error) {
     pending.classList.remove('lc-typing', 'lc-msg-ai');
     pending.classList.add('lc-msg-error');

@@ -77,12 +77,14 @@ async function getAccessToken(config, force = false) {
     }
     return (await signInAnonymously(config)).access_token;
 }
-async function askChat(config, message, history = []) {
+async function askChat(config, message, history = [], context) {
     const url = `${config.supabaseUrl}/functions/v1/${config.functionName || 'chat'}`;
     let token = await getAccessToken(config);
     const payload = { message };
     if (history.length)
         payload.history = history;
+    if (context)
+        payload.context = context;
     const body = JSON.stringify(payload);
     for (let attempt = 0; attempt < 2; attempt++) {
         const response = await fetch(url, {
@@ -104,10 +106,12 @@ async function askChat(config, message, history = []) {
                 throw new ChatNotice(data.reply);
             throw new Error(`chat function 返回 ${response.status}`);
         }
-        if (typeof (data === null || data === void 0 ? void 0 : data.reply) !== 'string' || !data.reply) {
+        const reply = typeof (data === null || data === void 0 ? void 0 : data.reply) === 'string' ? data.reply : '';
+        const actions = Array.isArray(data === null || data === void 0 ? void 0 : data.actions) ? data.actions : [];
+        if (!reply && actions.length === 0) {
             throw new Error('chat function 返回内容为空');
         }
-        return data.reply;
+        return { reply, actions };
     }
     throw new Error('身份校验失败');
 }

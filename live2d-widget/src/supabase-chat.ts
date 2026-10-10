@@ -4,6 +4,8 @@
  * @module supabase-chat
  */
 
+import type { SiteAction } from './site-actions.js';
+
 /**
  * 看板娘 AI 对话的配置，写在 dist/autoload.js 的 `initWidget({ chat: ... })` 里。
  */
@@ -37,6 +39,14 @@ interface ChatConfig {
 interface ChatMessage {
   role: 'user' | 'assistant';
   content: string;
+}
+
+/**
+ * 一次对话的结果：看板娘说了什么，以及它请求浏览器替你做什么。
+ */
+interface ChatResult {
+  reply: string;
+  actions: SiteAction[];
 }
 
 interface Session {
@@ -132,23 +142,26 @@ async function getAccessToken(config: ChatConfig, force = false): Promise<string
 }
 
 /**
- * 把一句话发给看板娘 AI，返回回复文本。
+ * 把一句话发给看板娘 AI。
  * 失败时抛出异常：`ChatNotice` 表示服务端给了可以直接展示的提示，其余情况按通用错误处理。
  * @param {ChatConfig} config - Supabase 配置
  * @param {string} message - 用户的问题
  * @param {ChatMessage[]} [history] - 之前的对话，用来给模型提供上下文
- * @returns {Promise<string>} 看板娘的回答
+ * @param {Record<string, unknown>} [context] - 站点信息（当前页面 / 文章列表 / 歌单）
+ * @returns {Promise<ChatResult>} 看板娘的回答 + 它请求的站点操作
  */
 async function askChat(
   config: ChatConfig,
   message: string,
   history: ChatMessage[] = [],
-): Promise<string> {
+  context?: Record<string, unknown>,
+): Promise<ChatResult> {
   const url = `${config.supabaseUrl}/functions/v1/${config.functionName || 'chat'}`;
   let token = await getAccessToken(config);
 
-  const payload: { message: string; history?: ChatMessage[] } = { message };
+  const payload: Record<string, unknown> = { message };
   if (history.length) payload.history = history;
+  if (context) payload.context = context;
   const body = JSON.stringify(payload);
 
   for (let attempt = 0; attempt < 2; attempt++) {
@@ -172,13 +185,16 @@ async function askChat(
       if (typeof data?.reply === 'string' && data.reply) throw new ChatNotice(data.reply);
       throw new Error(`chat function 返回 ${response.status}`);
     }
-    if (typeof data?.reply !== 'string' || !data.reply) {
+    const reply = typeof data?.reply === 'string' ? data.reply : '';
+    const actions: SiteAction[] = Array.isArray(data?.actions) ? data.actions : [];
+    // 只有工具调用、没有台词也算正常，前端会显示操作结果
+    if (!reply && actions.length === 0) {
       throw new Error('chat function 返回内容为空');
     }
-    return data.reply;
+    return { reply, actions };
   }
   throw new Error('身份校验失败');
 }
 
 export { askChat, ChatNotice };
-export type { ChatConfig, ChatMessage };
+export type { ChatConfig, ChatMessage, ChatResult };
