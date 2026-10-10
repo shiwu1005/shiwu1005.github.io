@@ -8,6 +8,7 @@ import { loadExternalResource, randomOtherOption } from './utils.js';
 import type Cubism2Model from './cubism2/index.js';
 import type { AppDelegate as Cubism5Model } from './cubism5/index.js';
 import logger, { LogLevel } from './logger.js';
+import type { ChatConfig } from './supabase-chat.js';
 
 interface ModelListCDN {
   messages: string[];
@@ -72,6 +73,12 @@ interface Config {
    * @type {LogLevel | undefined}
    */
   logLevel?: LogLevel;
+  /**
+   * Settings for the Supabase-backed AI chat ("ask-ai" tool).
+   * Without it, the AI button is not displayed.
+   * @type {ChatConfig | undefined}
+   */
+  chat?: ChatConfig;
 }
 
 /**

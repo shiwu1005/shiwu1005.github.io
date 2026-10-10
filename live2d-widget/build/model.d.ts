@@ -1,4 +1,5 @@
 import { LogLevel } from './logger.js';
+import type { ChatConfig } from './supabase-chat.js';
 interface ModelList {
     name: string;
     paths: string[];
@@ -15,6 +16,7 @@ interface Config {
     drag?: boolean;
     showToggleAfterQuit?: boolean;
     logLevel?: LogLevel;
+    chat?: ChatConfig;
 }
 declare class ModelManager {
     readonly useCDN: boolean;

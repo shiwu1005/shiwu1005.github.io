@@ -13,6 +13,7 @@ import {
   fa_xmark
 } from './icons.js';
 import { showMessage, i18n } from './message.js';
+import { askChat, ChatNotice } from './supabase-chat.js';
 import type { Config, ModelManager } from './model.js';
 import type { Tips } from './widget.js';
 
@@ -38,18 +39,15 @@ interface Tools {
 }
 
 /**
- * Waifu tools manager.
+ * Ask the board-lady AI a question through the Supabase Edge Function.
+ * @param {Config} config - Widget configuration; needs `chat` to be configured.
  */
-function getUserId(): string {
-  let id = localStorage.getItem('live2d-user-id');
-  if (!id) {
-    id = 'user_' + Math.random().toString(36).slice(2, 10);
-    localStorage.setItem('live2d-user-id', id);
+async function askAI(config: Config) {
+  const chat = config.chat;
+  if (!chat || !chat.supabaseUrl || !chat.supabaseKey) {
+    showMessage('AI 还没配置好呢～', 5000, 9);
+    return;
   }
-  return id;
-}
-
-function askAI() {
   const overlay = document.createElement('div');
   overlay.id = 'ai-input-overlay';
   overlay.innerHTML = `
@@ -71,29 +69,24 @@ function askAI() {
 
   document.getElementById('ai-input-cancel')!.onclick = close;
 
-  const send = () => {
+  const send = async () => {
     const question = input.value.trim();
     if (!question) return;
     close();
 
     showMessage('让我想想……', 3000, 9);
 
-    fetch('http://localhost:8080/api/chat', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-user-id': getUserId()
-      },
-      body: JSON.stringify({ message: question })
-    })
-      .then(res => res.json())
-      .then(data => {
-        showMessage(data.reply || '我暂时不知道怎么回答……', 8000, 9);
-      })
-      .catch(err => {
-        console.error(err);
-        showMessage('接口好像出问题了，等会儿再试试吧～', 4000, 9);
-      });
+    try {
+      const answer = await askChat(chat, question);
+      showMessage(answer, 10000, 9);
+    } catch (err) {
+      console.error('[live2d-widget] AI 对话失败：', err);
+      showMessage(
+        err instanceof ChatNotice ? err.message : '接口好像出问题了，等会儿再试试吧～',
+        5000,
+        9,
+      );
+    }
   };
 
   document.getElementById('ai-input-confirm')!.onclick = send;
@@ -102,7 +95,10 @@ function askAI() {
     if (e.key === 'Enter') send();
   });
 }
-}
+
+/**
+ * Waifu tools manager.
+ */
 class ToolsManager {
   tools: Tools;
   config: Config;
@@ -138,9 +134,9 @@ class ToolsManager {
           }
         }
       },
-       "ask-ai": {
-        icon: fa_comment,   // 用文件里已有的 fa_* 变量，没有的话换一个
-        callback: askAI
+      'ask-ai': {
+        icon: fa_comment,
+        callback: () => askAI(this.config)
       },
       'switch-model': {
         icon: fa_street_view,
@@ -216,6 +212,8 @@ class ToolsManager {
       this.config.tools = Object.keys(this.tools);
     }
     for (const toolName of this.config.tools) {
+      // 没配置 chat 就不显示 AI 按钮，免得点开只能看到报错
+      if (toolName === 'ask-ai' && !this.config.chat?.supabaseUrl) continue;
       if (this.tools[toolName]) {
         const { icon, callback } = this.tools[toolName];
         const element = document.createElement('span');
