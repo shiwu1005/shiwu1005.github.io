@@ -59,7 +59,8 @@ function loadExternalResource(url, type) {
     // cdnPath: 'https://fastly.jsdelivr.net/gh/fghrsh/live2d_api/',
     cubism2Path: live2d_path + 'live2d.min.js',
     cubism5Path: 'https://cubism.live2d.com/sdk-web/cubismcore/live2dcubismcore.min.js',
-    tools: ['hitokoto', 'asteroids', 'ask-ai', 'switch-model', 'switch-texture', 'photo', 'info', 'quit'],
+    // 不想要的按钮直接从数组里删掉即可（asteroids = 纸飞机小游戏，已去掉）
+    tools: ['hitokoto', 'ask-ai', 'switch-model', 'switch-texture', 'photo', 'info', 'quit'],
     // 看板娘 AI 对话：请求发给 Supabase Edge Function，DeepSeek 密钥只存在服务端。
     // 这里的 publishable key 属于可公开信息（等同旧的 anon key，权限受 RLS 约束）。
     chat: {
