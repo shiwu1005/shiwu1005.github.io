@@ -65,7 +65,9 @@ function loadExternalResource(url, type) {
     chat: {
       supabaseUrl: 'https://iywbwrgrwepbsgjrgeno.supabase.co',
       supabaseKey: 'sb_publishable__e-4KVe29V1dOaraw1dTwQ_hBhgL6WI',
-      functionName: 'chat'
+      functionName: 'chat',
+      // "Ash 小屋"面板的背景图（就是原来 #ai-input-box 用的那张）
+      background: '/img/Moondrop/img-2026-09-29 22_03_38.png.jpg'
     },
     logLevel: 'warn',
     drag: false,

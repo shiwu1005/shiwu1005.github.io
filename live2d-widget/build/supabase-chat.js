@@ -77,9 +77,13 @@ async function getAccessToken(config, force = false) {
     }
     return (await signInAnonymously(config)).access_token;
 }
-async function askChat(config, message) {
+async function askChat(config, message, history = []) {
     const url = `${config.supabaseUrl}/functions/v1/${config.functionName || 'chat'}`;
     let token = await getAccessToken(config);
+    const payload = { message };
+    if (history.length)
+        payload.history = history;
+    const body = JSON.stringify(payload);
     for (let attempt = 0; attempt < 2; attempt++) {
         const response = await fetch(url, {
             method: 'POST',
@@ -88,7 +92,7 @@ async function askChat(config, message) {
                 Authorization: `Bearer ${token}`,
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ message }),
+            body,
         });
         const data = await response.json().catch(() => ({}));
         if (response.status === 401 && attempt === 0) {

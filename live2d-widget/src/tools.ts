@@ -13,7 +13,7 @@ import {
   fa_xmark
 } from './icons.js';
 import { showMessage, i18n } from './message.js';
-import { askChat, ChatNotice } from './supabase-chat.js';
+import { toggleChatPanel } from './chat-panel.js';
 import type { Config, ModelManager } from './model.js';
 import type { Tips } from './widget.js';
 
@@ -39,61 +39,18 @@ interface Tools {
 }
 
 /**
- * Ask the board-lady AI a question through the Supabase Edge Function.
+ * Open the AI chat panel. The conversation lives in its own floating panel
+ * (bottom-left) instead of the waifu speech bubble, so long replies are never
+ * covered by the Live2D model.
  * @param {Config} config - Widget configuration; needs `chat` to be configured.
  */
-async function askAI(config: Config) {
+function askAI(config: Config) {
   const chat = config.chat;
   if (!chat || !chat.supabaseUrl || !chat.supabaseKey) {
     showMessage('AI 还没配置好呢～', 5000, 9);
     return;
   }
-  const overlay = document.createElement('div');
-  overlay.id = 'ai-input-overlay';
-  overlay.innerHTML = `
-    <div id="ai-input-box">
-      <div class="ai-input-title">你想问我什么呢？</div>
-      <input type="text" id="ai-input-field" placeholder="输入你的问题..." />
-      <div class="ai-input-actions">
-        <button id="ai-input-cancel">取消</button>
-        <button id="ai-input-confirm">确定</button>
-      </div>
-    </div>
-  `;
-  document.body.appendChild(overlay);
-
-  const input = document.getElementById('ai-input-field') as HTMLInputElement;
-  input.focus();
-
-  const close = () => overlay.remove();
-
-  document.getElementById('ai-input-cancel')!.onclick = close;
-
-  const send = async () => {
-    const question = input.value.trim();
-    if (!question) return;
-    close();
-
-    showMessage('让我想想……', 3000, 9);
-
-    try {
-      const answer = await askChat(chat, question);
-      showMessage(answer, 10000, 9);
-    } catch (err) {
-      console.error('[live2d-widget] AI 对话失败：', err);
-      showMessage(
-        err instanceof ChatNotice ? err.message : '接口好像出问题了，等会儿再试试吧～',
-        5000,
-        9,
-      );
-    }
-  };
-
-  document.getElementById('ai-input-confirm')!.onclick = send;
-
-  input.addEventListener('keydown', e => {
-    if (e.key === 'Enter') send();
-  });
+  toggleChatPanel(chat);
 }
 
 /**

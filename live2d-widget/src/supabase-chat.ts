@@ -23,6 +23,20 @@ interface ChatConfig {
    * @type {string | undefined}
    */
   functionName?: string;
+  /**
+   * 聊天面板的背景图地址，例如 '/img/Moondrop/xxx.jpg'。
+   * 不填就是纯色面板。
+   * @type {string | undefined}
+   */
+  background?: string;
+}
+
+/**
+ * 一条对话消息，用来给模型提供上下文。
+ */
+interface ChatMessage {
+  role: 'user' | 'assistant';
+  content: string;
 }
 
 interface Session {
@@ -122,11 +136,20 @@ async function getAccessToken(config: ChatConfig, force = false): Promise<string
  * 失败时抛出异常：`ChatNotice` 表示服务端给了可以直接展示的提示，其余情况按通用错误处理。
  * @param {ChatConfig} config - Supabase 配置
  * @param {string} message - 用户的问题
+ * @param {ChatMessage[]} [history] - 之前的对话，用来给模型提供上下文
  * @returns {Promise<string>} 看板娘的回答
  */
-async function askChat(config: ChatConfig, message: string): Promise<string> {
+async function askChat(
+  config: ChatConfig,
+  message: string,
+  history: ChatMessage[] = [],
+): Promise<string> {
   const url = `${config.supabaseUrl}/functions/v1/${config.functionName || 'chat'}`;
   let token = await getAccessToken(config);
+
+  const payload: { message: string; history?: ChatMessage[] } = { message };
+  if (history.length) payload.history = history;
+  const body = JSON.stringify(payload);
 
   for (let attempt = 0; attempt < 2; attempt++) {
     const response = await fetch(url, {
@@ -136,7 +159,7 @@ async function askChat(config: ChatConfig, message: string): Promise<string> {
         Authorization: `Bearer ${token}`,
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ message }),
+      body,
     });
     const data = await response.json().catch(() => ({}));
 
@@ -158,4 +181,4 @@ async function askChat(config: ChatConfig, message: string): Promise<string> {
 }
 
 export { askChat, ChatNotice };
-export type { ChatConfig };
+export type { ChatConfig, ChatMessage };
